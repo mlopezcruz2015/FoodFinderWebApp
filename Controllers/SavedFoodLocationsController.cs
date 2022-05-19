@@ -20,11 +20,30 @@ namespace FoodFinderWebApp.wwwroot
         }
 
         // GET: SavedFoodLocations
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchString)
         {
-              return _context.SavedFoodLocation != null ? 
-                          View(await _context.SavedFoodLocation.ToListAsync()) :
-                          Problem("Entity set 'FoodFinderWebAppContext.SavedFoodLocation'  is null.");
+            if (_context.SavedFoodLocation != null)
+            {
+                var foodLocations = from f in _context.SavedFoodLocation
+                                    select f;
+
+                if (!string.IsNullOrEmpty(searchString))
+                {
+                    foodLocations = foodLocations.Where(s => s.Name!.Contains(searchString));
+                }
+
+                return View(await foodLocations.ToListAsync());
+            }
+            else
+            {
+                return Problem("Entity set 'FoodFinderWebAppContext.SavedFoodLocation'  is null.");
+            }
+        }
+
+        [HttpPost]
+        public string Index(string searchString, bool notUsed)
+        {
+            return "From [HttpPost]Index: filter on " + searchString;
         }
 
         // GET: SavedFoodLocations/Details/5
