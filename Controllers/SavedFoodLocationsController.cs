@@ -20,10 +20,15 @@ namespace FoodFinderWebApp.wwwroot
         }
 
         // GET: SavedFoodLocations
-        public async Task<IActionResult> Index(string searchString)
+        public async Task<IActionResult> Index(string foodCategory, string searchString)
         {
             if (_context.SavedFoodLocation != null)
             {
+                // Use LINQ to get list of genres.
+                IQueryable<string> categoryQuery = from m in _context.SavedFoodLocation
+                                                orderby m.Category
+                                                select m.Category;
+
                 var foodLocations = from f in _context.SavedFoodLocation
                                     select f;
 
@@ -32,7 +37,18 @@ namespace FoodFinderWebApp.wwwroot
                     foodLocations = foodLocations.Where(s => s.Name!.Contains(searchString));
                 }
 
-                return View(await foodLocations.ToListAsync());
+                if (!string.IsNullOrEmpty(foodCategory))
+                {
+                    foodLocations = foodLocations.Where(x => x.Category == foodCategory);
+                }
+
+                var foodCategoryVM = new FoodLocationViewModel
+                {
+                    Categories = new SelectList(await categoryQuery.Distinct().ToListAsync()),
+                    SavedFoodLocations = await foodLocations.ToListAsync()
+                };
+
+                return View(foodCategoryVM);
             }
             else
             {
@@ -75,7 +91,7 @@ namespace FoodFinderWebApp.wwwroot
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Address,DateAdded")] SavedFoodLocation savedFoodLocation)
+        public async Task<IActionResult> Create([Bind("Id,Name,Address,DateAdded,Category")] SavedFoodLocation savedFoodLocation)
         {
             if (ModelState.IsValid)
             {
@@ -107,7 +123,7 @@ namespace FoodFinderWebApp.wwwroot
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Address,DateAdded")] SavedFoodLocation savedFoodLocation)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Address,DateAdded,Category")] SavedFoodLocation savedFoodLocation)
         {
             if (id != savedFoodLocation.Id)
             {

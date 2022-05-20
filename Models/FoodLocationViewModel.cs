@@ -7,7 +7,7 @@ namespace FoodFinderWebApp.Models
     {
         public List<SavedFoodLocation>? SavedFoodLocations { get; set; }
         public SelectList? Categories { get; set; }
-        public string? Category { get; set; }
+        public string? FoodCategory { get; set; }
         public string? SearchString { get; set; }
     }
 }

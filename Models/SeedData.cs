@@ -26,6 +26,7 @@ namespace FoodFinderWebApp.Models
                         Name = "Burger King",
                         DateAdded = DateTime.Parse("1989-2-12"),
                         Address = "123 King Ave",
+                        Category = "Fast Food"
                     },
 
                     new SavedFoodLocation
@@ -33,6 +34,7 @@ namespace FoodFinderWebApp.Models
                         Name = "McDonalds",
                         DateAdded = DateTime.Parse("1990-2-12"),
                         Address = "123 Buger Ave",
+                        Category = "Fast Food"
                     },
 
                     new SavedFoodLocation
@@ -40,6 +42,7 @@ namespace FoodFinderWebApp.Models
                         Name = "Taco Bell",
                         DateAdded = DateTime.Parse("1991-2-12"),
                         Address = "123 Taco Ave",
+                        Category = "Taco Shop"
                     },
 
                     new SavedFoodLocation
@@ -47,6 +50,7 @@ namespace FoodFinderWebApp.Models
                         Name = "Sonic",
                         DateAdded = DateTime.Parse("1992-2-12"),
                         Address = "123 Sonic Ave",
+                        Category = "Fancy"
                     }
                 );
                 context.SaveChanges();
