@@ -8,7 +8,7 @@ using Newtonsoft.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<FoodFinderWebAppContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("FoodFinderWebAppContext") ?? throw new InvalidOperationException("Connection string 'FoodFinderWebAppContext' not found.")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("MyDbConnection") ?? throw new InvalidOperationException("Connection string 'MyDbConnection' not found.")));
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
