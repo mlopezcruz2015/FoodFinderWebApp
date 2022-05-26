@@ -41,25 +41,4 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
-//Get latlong from zip:
-
-HttpWebRequest zipRequest = (HttpWebRequest)WebRequest.Create("https://thezipcodes.com/api/v1/search?zipCode=33463&countryCode=US&apiKey=1e77aaee2bd54aafa23b46c9f14cc543");
-var zipResponse = zipRequest.GetResponse();
-var tempStr = zipResponse.GetResponseStream();
-StreamReader reader = new StreamReader(tempStr);
-var anotherTemp = reader.ReadToEnd();
-var zipInfo = JsonConvert.DeserializeObject<ZIPRoot>(anotherTemp);
-
-//Set up Google API
-GoogleSigned.AssignAllServices(new GoogleSigned("AIzaSyAnl6DeaeqQAMLAOthZjCHlaBeppbig998"));
-
-
-Google.Maps.Places.PlacesService temp = new Google.Maps.Places.PlacesService();
-var request = new Google.Maps.Places.NearbySearchRequest();
-
-request.Location = new LatLng(Convert.ToDecimal(zipInfo.location[0].latitude), Convert.ToDecimal(zipInfo.location[0].longitude));
-request.Radius = 5000;
-request.Keyword = "Food";
-var temp2 = temp.GetResponse(request);
-
 app.Run();

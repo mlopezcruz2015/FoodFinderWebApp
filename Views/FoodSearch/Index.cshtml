@@ -1,7 +1,48 @@
-﻿@{
+﻿@model FoodFinderWebApp.Models.FoodLocationResultsViewModel
+
+@{
     ViewData["Title"] = "Food Search";
 }
 
 <h2>My Food Search</h2>
 
 <p>Hello from our View Template!</p>
+
+<form asp-controller="FoodSearch" asp-action="Index" method="get">
+    <p>
+        Zip Code: <input type="text" name="SearchString" />
+        <input type="submit" value="Filter" />
+    </p>
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.FoodLocations[0].Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FoodLocations[0].Address)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FoodLocations[0].Category)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.FoodLocations) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Address)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Category)
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
